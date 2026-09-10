@@ -34,8 +34,16 @@ def parse_acts(text: str) -> dict[str, str]:
 async def synth(text: str, voice: str, outfile: Path) -> None:
     import edge_tts  # noqa: WPS433 (import erst hier: --dry-run läuft ohne Paket)
 
-    comm = edge_tts.Communicate(text, voice)
-    await comm.save(str(outfile))
+    # edge-tts kann still verkürzt speichern (Netzwerk-Flakiness) → Größe prüfen + 1 Retry.
+    for attempt in (1, 2):
+        comm = edge_tts.Communicate(text, voice)
+        await comm.save(str(outfile))
+        size = outfile.stat().st_size
+        # Faustregel: ≥ 3 KB pro 100 Zeichen (de-DE, mp3). Darunter = Abbruch.
+        if size >= len(text) * 30:
+            return
+        print(f"  WARNUNG: {outfile.name} nur {size} Bytes (Versuch {attempt}) — Retry …")
+    raise RuntimeError(f"{outfile.name}: TTS-Ausgabe bleibt unplausibel klein — bitte manuell prüfen.")
 
 
 async def main_async(voice: str, dry_run: bool) -> int:

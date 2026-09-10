@@ -52,7 +52,7 @@ export const S03_Methode_PLACEHOLDER: React.FC = () => (
   />
 );
 
-export const S04_Befund: React.FC = () => (
+export const S04_Befund_PLACEHOLDER: React.FC = () => (
   <Slate
     act="S04 · BEFUND"
     title="Das Signal ist real"

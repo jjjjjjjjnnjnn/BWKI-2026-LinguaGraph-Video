@@ -11,9 +11,25 @@ export const THEME = {
   mono: "'JetBrains Mono', Consolas, monospace",
 } as const;
 
-// ── Neuaufbau (2026-09-10): garden `blueprint`-Theme als Token.
-// Quelle: .agents/skills/web-video-presentation/themes/blueprint/tokens.css
-// THEME (legacy) bleibt unangetastet, bis S01–S06 migriert sind.
+// ── v3 Papier-Dossier (2026-09-10): Skill-Fusion paper-press + kraft-paper +
+// vintage-editorial + tufte-dataink + vignelli. Einzige Point-Farbe: Siegelrot.
+// BLUEPRINT (v2) bleibt als rejected Referenz stehen, wird nicht mehr rendert.
+export const PAPER = {
+  paper: "#faf9f6",
+  paperWarm: "#f5f0e8",
+  border: "#e0ddd5",
+  borderLight: "#ece8e0",
+  ink: "#1a1a1a",
+  inkLight: "#4a4a4a",
+  inkMuted: "#888888",
+  seal: "#c44536", // einzige Point-Farbe: ZH-DE-Signal, Schlüsselwörter, Siegel
+  sealSoft: "rgba(196, 69, 54, 0.08)",
+  slate: "#3E4A5C", // zweite Datenfarbe (tufte): nur Vergleichsserien
+  faintRule: "#D8D2C2", // tufte: Referenzlinien nicht dunkler
+  serifDe: "Georgia, 'Times New Roman', serif",
+  serifCn: "'Noto Serif SC', 'Songti SC', STSong, SimSun, serif",
+  mono: "'JetBrains Mono', Consolas, monospace", // nur Achsen-Labels (tufte)
+} as const;
 export const BLUEPRINT = {
   shell: "#0a1224",
   surface: "#0e1a2e",

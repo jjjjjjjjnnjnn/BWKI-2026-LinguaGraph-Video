@@ -1,0 +1,13 @@
+Abschnitt,Thema,ZH-DE,ZH-EN,Anmerkung
+Beat2,Freedom,0.84,0.72,transkribiert ±0.01 aus figure1_lds_distribution.png
+Beat2,Justice,0.89,0.70,transkribiert ±0.01
+Beat2,Responsibility,0.88,0.77,transkribiert ±0.01
+Beat2,Success,1.00,0.92,ZH-DE 1.00 VERIFY (Sauele an 1.0-Achse)
+Beat3 Human ZH-DE,0.9364,,exakt aus fig_a7_1_delta_lds.csv
+Beat3 LLM ZH-DE,0.9446,,exakt
+Beat3 Social ZH-DE,0.8191,,exakt
+Beat3 Math ZH-DE,0.5188,,exakt; Darstellung nur als indikativ
+C1,51 Messungen,,,
+C1,47 Modelle,,,
+Treiber DE,Autonomie + Regeln,,deskriptiv kein kausal
+Treiber ZH,Raum + Anspruch,,deskriptiv kein kausal

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>请替我保守秘密 — 项目评审材料</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #4a4a4a;
+    --ink-muted: #888;
+    --paper: #faf9f6;
+    --paper-warm: #f5f0e8;
+    --accent: #c44536;
+    --accent-soft: #e8d5d0;
+    --border: #e0ddd5;
+    --border-light: #ece8e0;
+    --green: #2d6a4f;
+    --green-bg: #e8f5e9;
+    --yellow: #b8860b;
+    --yellow-bg: #fff8e1;
+    --blue: #1565c0;
+    --blue-bg: #e3f2fd;
+    --purple: #6a1b9a;
+    --purple-bg: #f3e5f5;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Noto Serif SC", "Source Han Serif CN", "Songti SC", Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 40px 24px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 60px 0 48px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 48px;
+  }
+  .header h1 { font-size: 2.4em; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .header .subtitle { font-size: 1em; color: var(--ink-muted); letter-spacing: 0.15em; }
+  .header .meta {
+    margin-top: 20px; font-size: 0.85em; color: var(--ink-muted);
+    display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+  }
+  .header .meta span::before {
+    content: ""; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent); margin-right: 6px; vertical-align: middle;
+  }
+
+  /* Sections */
+  section { margin-bottom: 56px; }
+  section h2 {
+    font-size: 1.35em; font-weight: 700;
+    border-bottom: 1px solid var(--border); padding-bottom: 8px;
+    margin-bottom: 24px; letter-spacing: 0.05em;
+  }
+  section h3 { font-size: 1.05em; font-weight: 600; margin: 28px 0 12px; color: var(--ink); }
+  section h4 { font-size: 0.95em; font-weight: 600; margin: 20px 0 8px; color: var(--ink-light); }
+  p { margin-bottom: 16px; font-size: 0.95em; }
+  .lead {
+    font-size: 1.05em; color: var(--ink-light);
+    border-left: 3px solid var(--accent); padding-left: 16px; margin-bottom: 24px;
+  }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 0.88em; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border-light); }
+  th {
+    background: var(--paper-warm); font-weight: 600; font-size: 0.82em;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);
+  }
+  tr:hover td { background: rgba(196,69,54,0.03); }
+
+  /* Code / Flow */
+  pre, .flow-box {
+    background: var(--paper-warm); border: 1px solid var(--border); border-radius: 6px;
+    padding: 20px 24px; font-family: "JetBrains Mono","Fira Code","Consolas", monospace;
+    font-size: 0.82em; line-height: 1.7; overflow-x: auto; margin: 16px 0 24px;
+  }
+  code {
+    font-family: "JetBrains Mono","Fira Code","Consolas", monospace;
+    font-size: 0.88em; background: var(--paper-warm); padding: 2px 6px; border-radius: 3px;
+  }
+
+  /* Comparison table */
+  .compare-table { border: 2px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .compare-table th { background: var(--ink); color: white; text-transform: none; font-size: 0.9em; letter-spacing: 0; }
+  .compare-table td:first-child { font-weight: 600; background: var(--paper-warm); white-space: nowrap; }
+  .compare-table .before { color: #c62828; }
+  .compare-table .after { color: var(--green); }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 16px 0 24px; }
+  .card {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 20px; box-shadow: var(--shadow);
+  }
+  .card h4 { font-size: 0.9em; font-weight: 600; margin-bottom: 8px; color: var(--accent); }
+  .card p { font-size: 0.85em; color: var(--ink-light); margin: 0; }
+
+  /* Risk items */
+  .risk-item {
+    display: flex; gap: 12px; margin-bottom: 12px; padding: 14px 16px;
+    background: white; border: 1px solid var(--border-light); border-radius: 6px;
+  }
+  .risk-item .icon {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85em; font-weight: 700;
+  }
+  .risk-item .icon.warn { background: var(--yellow-bg); color: var(--yellow); }
+  .risk-item .icon.critical { background: #fce4ec; color: #c62828; }
+  .risk-item .content { flex: 1; }
+  .risk-item .content strong { font-size: 0.9em; }
+  .risk-item .content p { font-size: 0.85em; color: var(--ink-light); margin: 4px 0 0; }
+
+  /* Question box */
+  .questions {
+    background: var(--paper-warm); border: 2px solid var(--accent);
+    border-radius: 8px; padding: 28px 32px; margin: 24px 0;
+  }
+  .questions h3 { margin-top: 0; color: var(--accent); }
+  .questions ol { padding-left: 20px; }
+  .questions li { margin-bottom: 10px; font-size: 0.92em; }
+
+  /* Badge */
+  .badge {
+    display: inline-block; font-size: 0.72em; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .badge-frozen { background: #e3f2fd; color: #1565c0; }
+  .badge-active { background: var(--green-bg); color: var(--green); }
+  .badge-permanent { background: var(--accent-soft); color: var(--accent); }
+  .badge-on-demand { background: #f3e5f5; color: #7b1fa2; }
+
+  /* State machine */
+  .state-flow {
+    display: flex; align-items: center; gap: 0; margin: 20px 0 28px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .state-node {
+    padding: 8px 16px; border-radius: 6px; font-size: 0.82em;
+    font-weight: 600; text-align: center; white-space: nowrap;
+  }
+  .state-arrow { font-size: 1.2em; color: var(--ink-muted); padding: 0 4px; }
+  .state-draft { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+  .state-work { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+  .state-review { background: #fce4ec; color: #c62828; border: 1px solid #ef9a9a; }
+  .state-frozen { background: #e8eaf6; color: #283593; border: 1px solid #9fa8da; }
+  .state-archive { background: #f3e5f5; color: #6a1b9a; border: 1px solid #ce93d8; }
+
+  /* Architecture diagram */
+  .arch-diagram {
+    background: white; border: 2px solid var(--border); border-radius: 10px;
+    padding: 32px; margin: 20px 0 28px; text-align: center;
+  }
+  .arch-row {
+    display: flex; justify-content: center; align-items: center; gap: 12px;
+    margin: 8px 0; flex-wrap: wrap;
+  }
+  .arch-box {
+    padding: 10px 18px; border-radius: 6px; font-size: 0.82em; font-weight: 600;
+    text-align: center; min-width: 140px;
+  }
+  .arch-arrow { font-size: 1.4em; color: var(--ink-muted); }
+  .arch-arrow-down { font-size: 1.4em; color: var(--ink-muted); display: block; text-align: center; margin: 4px 0; }
+  .arch-user { background: var(--accent); color: white; }
+  .arch-system { background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); }
+  .arch-output { background: var(--green-bg); border: 1px solid #a5d6a7; color: var(--green); }
+  .arch-review { background: #fce4ec; border: 1px solid #ef9a9a; color: #c62828; }
+  .arch-freeze { background: #e8eaf6; border: 1px solid #9fa8da; color: #283593; }
+  .arch-label {
+    font-size: 0.72em; color: var(--ink-muted); text-transform: uppercase;
+    letter-spacing: 0.08em; margin: 12px 0 4px; font-weight: 600;
+  }
+
+  /* Decision matrix */
+  .decision-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+    border: 2px solid var(--border); border-radius: 8px; overflow: hidden; margin: 16px 0 24px;
+  }
+  .decision-col {
+    padding: 20px; border-right: 1px solid var(--border-light);
+  }
+  .decision-col:last-child { border-right: none; }
+  .decision-col h4 {
+    font-size: 0.85em; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 2px solid;
+  }
+  .decision-col.col-author h4 { color: var(--accent); border-color: var(--accent); }
+  .decision-col.col-ai h4 { color: var(--blue); border-color: var(--blue); }
+  .decision-col.col-script h4 { color: var(--green); border-color: var(--green); }
+  .decision-col ul { list-style: none; padding: 0; }
+  .decision-col li {
+    font-size: 0.85em; padding: 6px 0; border-bottom: 1px dashed var(--border-light);
+  }
+  .decision-col li:last-child { border-bottom: none; }
+
+  /* Cost flow */
+  .cost-flow {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;
+    margin: 16px 0 24px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+  }
+  .cost-step {
+    padding: 14px 18px; font-size: 0.85em; border-bottom: 1px solid var(--border-light);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .cost-step:nth-child(odd) { background: white; }
+  .cost-step:nth-child(even) { background: var(--paper-warm); }
+  .cost-step .step-name { font-weight: 600; flex: 1; }
+  .cost-step .step-time { font-size: 0.8em; color: var(--ink-muted); white-space: nowrap; }
+  .cost-total {
+    grid-column: 1 / -1; padding: 14px 18px; background: var(--ink); color: white;
+    font-weight: 600; font-size: 0.9em; text-align: center;
+  }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* Footer */
+  .footer {
+    text-align: center; padding: 32px 0; border-top: 1px solid var(--border);
+    margin-top: 48px; font-size: 0.82em; color: var(--ink-muted);
+  }
+
+  /* Print */
+  @media print {
+    body { font-size: 11pt; }
+    .container { max-width: 100%; padding: 0; }
+    .header { padding: 30px 0 24px; }
+    section { page-break-inside: avoid; }
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .container { padding: 24px 16px; }
+    .header h1 { font-size: 1.8em; }
+    .card-grid { grid-template-columns: 1fr; }
+    .state-flow { gap: 4px; }
+    .state-node { font-size: 0.72em; padding: 6px 10px; }
+    .decision-grid { grid-template-columns: 1fr; }
+    .decision-col { border-right: none; border-bottom: 1px solid var(--border-light); }
+    .decision-col:last-child { border-bottom: none; }
+    .compare-table td:first-child { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ==================== HEADER ==================== -->
+<div class="header">
+  <h1>请替我保守秘密</h1>
+  <div class="subtitle">AI 长篇小说创作系统 · 项目评审材料</div>
+  <div class="meta">
+    <span>卷三已冻结</span>
+    <span>51章 · 约80,000字</span>
+    <span>Engine v2.3</span>
+  </div>
+</div>
+
+<!-- ==================== 1. 项目背景 ==================== -->
+<section>
+  <h2>1. 项目背景</h2>
+  <p class="lead">这是一个长期小说创作项目。作者不是希望 AI 替他写小说，而是希望 AI 成为一个长期稳定的<strong>开发编辑（Development Editor）</strong>，帮助他在数百万字创作过程中保持人物一致、世界观一致、语言自然，同时避免 AI 常见表达。</p>
+
+  <h3>为什么需要 Engine v2？</h3>
+  <p>v1 阶段暴露了系统性问题：每次 AI 表现不稳定，文档越来越乱，上下文越来越大，规则越来越重复。v2 的核心目标是<strong>让系统可维护</strong>，而不只是能运行。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>问题维度</th><th>没有系统之前</th><th>建立系统以后</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>AI 输出稳定性</td>
+        <td class="before">每次表现不同，风格漂移</td>
+        <td class="after">输出趋于稳定，Identity 有保障</td>
+      </tr>
+      <tr>
+        <td>文档管理</td>
+        <td class="before">文件越来越多，互相引用混乱</td>
+        <td class="after">4层加载架构，单一职责</td>
+      </tr>
+      <tr>
+        <td>上下文消耗</td>
+        <td class="before">规则膨胀到 ~16,000 字，AI 加载不全</td>
+        <td class="after">固定 ~2,300 字，10分钟内就绪</td>
+      </tr>
+      <tr>
+        <td>规则维护</td>
+        <td class="before">改一条规则要同步五处</td>
+        <td class="after">尽量单一来源，协议层独立</td>
+      </tr>
+      <tr>
+        <td>语言质量</td>
+        <td class="before">AI 句式反复出现，缺乏检测</td>
+        <td class="after">黑名单 + 基线 + 自动扫描器</td>
+      </tr>
+      <tr>
+        <td>质量控制</td>
+        <td class="before">主观判断，无标准</td>
+        <td class="after">10步工作流 + STOP RULE</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== 2. 项目目标 ==================== -->
+<section>
+  <h2>2. 项目目标</h2>
+  <p>五个可验证的长期目标：</p>
+  <div class="card-grid">
+    <div class="card">
+      <h4>① 长期稳定创作</h4>
+      <p>目标产出 200+ 章，每章约 2,100 字，维持数百万字级别的持续创作</p>
+    </div>
+    <div class="card">
+      <h4>② 降低 AI 随机性</h4>
+      <p>同一批输入，AI 输出的一致性从不可预测提升到可预测</p>
+    </div>
+    <div class="card">
+      <h4>③ 降低维护成本</h4>
+      <p>系统运行半年后，维护频率应持续下降而非上升</p>
+    </div>
+    <div class="card">
+      <h4>④ 保证作品 Identity</h4>
+      <p>6 条核心原则不可违反，任何修改不得动摇作品内核</p>
+    </div>
+    <div class="card">
+      <h4>⑤ 语言一致性</h4>
+      <p>AI 生成文本通过自动扫描后，人类读者无法区分哪些段落经过 AI 处理</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 3. 系统架构总览 ==================== -->
+<section>
+  <h2>3. 系统架构</h2>
+  <p>一张图看清整个系统如何运转：</p>
+
+  <div class="arch-diagram">
+    <div class="arch-label">参与者</div>
+    <div class="arch-row">
+      <div class="arch-box arch-user">作者</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box arch-system">WAKEUP</div>
+    </div>
+
+    <span class="arch-arrow-down">↓</span>
+
+    <div class="arch-label">上下文加载（每次启动）</div>
+    <div class="arch-row">
+      <div class="arch-box arch-system" style="border:2px solid var(--accent);">① CORE_CONSTITUTION</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box arch-system">② DATABASE_SUMMARY</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box arch-system">③ 任务协议</div>
+    </div>
+
+    <span class="arch-arrow-down">↓</span>
+
+    <div class="arch-label">生产流程（每章）</div>
+    <div class="arch-row">
+      <div class="arch-box arch-output">初稿创作</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box arch-system">10步工程流程</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box arch-review">多读者评审</div>
+    </div>
+
+    <span class="arch-arrow-down">↓</span>
+
+    <div class="arch-row">
+      <div class="arch-box arch-review">语言健康度扫描</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box arch-freeze">冻结</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box arch-system">数据库更新</div>
+    </div>
+  </div>
+
+  <p><strong>设计意图：</strong>所有规则拆分为"知识"和"执行"两层。宪法层不可违反，协议层按任务切换，数据库层按需检索。避免一次性加载全部文档导致上下文膨胀。</p>
+</section>
+
+<!-- ==================== 4. 文件分层 ==================== -->
+<section>
+  <h2>4. 文件分层</h2>
+
+  <table>
+    <thead>
+      <tr><th>层级</th><th>文件</th><th>加载方式</th><th>更新频率</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>宪法层</strong></td>
+        <td>CORE_CONSTITUTION.md</td>
+        <td><span class="badge badge-permanent">永久加载</span></td>
+        <td>极少修改</td>
+      </tr>
+      <tr>
+        <td><strong>数据库摘要</strong></td>
+        <td>DATABASE_SUMMARY.md</td>
+        <td><span class="badge badge-active">当前卷加载</span></td>
+        <td>每卷更新</td>
+      </tr>
+      <tr>
+        <td><strong>创作协议</strong></td>
+        <td>WRITING_PROTOCOL.md</td>
+        <td><span class="badge badge-on-demand">按需加载</span></td>
+        <td>按需调整</td>
+      </tr>
+      <tr>
+        <td><strong>审稿协议</strong></td>
+        <td>REVIEW_PROTOCOL.md</td>
+        <td><span class="badge badge-on-demand">按需加载</span></td>
+        <td>按需调整</td>
+      </tr>
+      <tr>
+        <td><strong>语言协议</strong></td>
+        <td>LANGUAGE_PROTOCOL.md</td>
+        <td><span class="badge badge-on-demand">按需加载</span></td>
+        <td>按需调整</td>
+      </tr>
+      <tr>
+        <td><strong>数据库本体</strong></td>
+        <td>09_项目数据库/</td>
+        <td><span class="badge badge-on-demand">按需检索</span></td>
+        <td>每卷末更新</td>
+      </tr>
+      <tr>
+        <td><strong>语言校准</strong></td>
+        <td>10_语言校准系统/</td>
+        <td><span class="badge badge-on-demand">按需加载</span></td>
+        <td>按需调整</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== 5. 决策矩阵 ==================== -->
+<section>
+  <h2>5. 决策矩阵 — 谁负责什么？</h2>
+  <p>明确每个角色的决策边界，避免"到底谁拍板"的问题：</p>
+
+  <div class="decision-grid">
+    <div class="decision-col col-author">
+      <h4>作者</h4>
+      <ul>
+        <li>剧情走向与结构</li>
+        <li>人物设定与成长</li>
+        <li>世界观框架</li>
+        <li>最终冻结确认</li>
+        <li>Identity 修改（最高权限）</li>
+        <li>创作节奏决定</li>
+      </ul>
+    </div>
+    <div class="decision-col col-ai">
+      <h4>AI (Claude)</h4>
+      <ul>
+        <li>语言清理与扫描</li>
+        <li>风格一致性检测</li>
+        <li>多读者评审执行</li>
+        <li>趋势追踪分析</li>
+        <li>数据库维护更新</li>
+        <li>系统健康检查</li>
+      </ul>
+    </div>
+    <div class="decision-col col-script">
+      <h4>脚本 / 工具</h4>
+      <ul>
+        <li>字数统计（count_chars.py）</li>
+        <li>风格扫描（style_advisor.py）</li>
+        <li>AI 表达黑名单检测</li>
+        <li>句法模式分析</li>
+        <li>跨章趋势计算</li>
+        <li>自动化报告生成</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><strong>核心原则：</strong>AI 负责执行和检测，作者负责决策和最终确认。脚本负责自动化和数据统计。三者互不越界。</p>
+</section>
+
+<!-- ==================== 6. 章节生命周期 ==================== -->
+<section>
+  <h2>6. 章节生命周期</h2>
+  <p>一个章节从初稿到最终冻结的完整路径，对应工业生产的 "Raw → Assembly → QC → QA → Release → Archive"：</p>
+
+  <div class="state-flow">
+    <div class="state-node state-draft">初稿<br><small>Raw</small></div>
+    <div class="state-arrow">→</div>
+    <div class="state-node state-work">10步工程流程<br><small>Assembly</small></div>
+    <div class="state-arrow">→</div>
+    <div class="state-node state-review">多读者评审<br><small>QC</small></div>
+    <div class="state-arrow">→</div>
+    <div class="state-node state-review">语言健康度扫描<br><small>QA</small></div>
+    <div class="state-arrow">→</div>
+    <div class="state-node state-frozen">冻结<br><small>Release</small></div>
+    <div class="state-arrow">→</div>
+    <div class="state-node state-archive">归档<br><small>Archive</small></div>
+  </div>
+
+  <h3>10 步工作流详细流程</h3>
+  <pre>Step 1  诊断（字数≥2,100？阅读完整？）
+  ↓
+Step 2  扩写（仅当字数&lt;2,100时）
+  ↓
+Step 3  拆段（&gt;150字段落拆分）
+  ↓
+Step 4  删AI解释句（不是A是B / 像是 / 没有只是）
+  ↓
+Step 5  删AI补偿动作（停了一下 / 看了一眼）
+  ↓
+Step 6  句法清理（裸形容词 / 纠正式 / 否定动作 / 抽象总结）
+  ↓
+Step 7  删渐变词（慢慢 / 越来越 / 开始 / 继续）
+  ↓
+Step 8  风格扫描验证（python style_advisor.py check）
+  ↓
+Step 9  Reader Pass（呼吸点 / 生活细节 / 世界活着 / 情绪波形 / 人物话语）
+  ↓
+Step 10 STOP RULE（五项全通过 → 冻结）</pre>
+
+  <p><strong>冻结标准（STOP RULE）：</strong>字数≥2,100、语言清理通过、Reader Pass通过、阅读自然、无模板连续爆发——五项全满足后立即冻结，不再优化。</p>
+</section>
+
+<!-- ==================== 7. 成本估算 ==================== -->
+<section>
+  <h2>7. 成本估算 — 每章需要多久？</h2>
+  <p>基于 51 章的实际生产经验估算：</p>
+
+  <div class="cost-flow">
+    <div class="cost-step"><span class="step-name">创作（扩写 + 初稿）</span><span class="step-time">~90 分钟</span></div>
+    <div class="cost-step"><span class="step-name">Step 3-7 语言清理</span><span class="step-time">~30 分钟</span></div>
+    <div class="cost-step"><span class="step-name">Step 8 风格扫描验证</span><span class="step-time">~5 分钟</span></div>
+    <div class="cost-step"><span class="step-name">Step 9 Reader Pass</span><span class="step-time">~15 分钟</span></div>
+    <div class="cost-step"><span class="step-name">Step 10 STOP RULE 判定</span><span class="step-time">~3 分钟</span></div>
+    <div class="cost-step"><span class="step-name">多读者评审（5位读者）</span><span class="step-time">~20 分钟</span></div>
+    <div class="cost-step"><span class="step-name">语言健康度扫描</span><span class="step-time">~5 分钟</span></div>
+    <div class="cost-step"><span class="step-name">冻结 + 数据库更新</span><span class="step-time">~8 分钟</span></div>
+    <div class="cost-total">每章总耗时 ≈ 176 分钟（约 3 小时）· 卷末额外：系统健康检查 ~30 分钟</div>
+  </div>
+
+  <h3>系统维护成本（非每章）</h3>
+  <table>
+    <thead>
+      <tr><th>维护项</th><th>频率</th><th>预估耗时</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>系统健康检查</td><td>每 3 卷一次</td><td>~30 分钟</td></tr>
+      <tr><td>数据库跨卷更新</td><td>每卷末</td><td>~15 分钟</td></tr>
+      <tr><td>Engine 版本升级</td><td>按需（v2.0→v2.3 共 3 次）</td><td>~2-4 小时/次</td></tr>
+      <tr><td>语言校准系统更新</td><td>按需</td><td>~1 小时/次</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>判断标准：</strong>如果每章耗时持续下降 → 系统在优化；如果持续上升 → 系统需要重构。</p>
+</section>
+
+<!-- ==================== 8. 项目地图 ==================== -->
+<section>
+  <h2>8. 项目地图</h2>
+
+  <pre>请替我保守秘密/
+│
+├── 00_项目初始化/              ← 系统启动与协议
+│   ├── CORE_CONSTITUTION.md      作品宪法（Identity + 禁止项）
+│   ├── DATABASE_SUMMARY.md       数据库摘要
+│   ├── WRITING_PROTOCOL.md       创作协议
+│   ├── REVIEW_PROTOCOL.md        审稿协议
+│   ├── LANGUAGE_PROTOCOL.md      语言扫描协议
+│   ├── TREND_PROTOCOL.md         趋势分析协议
+│   └── SYSTEM_HEALTH_CHECK.md    系统健康检查
+│
+├── 01_市场分析/                ← 平台趋势与竞品
+├── 02_创作设计/                ← 世界观、人物、剧情
+│   ├── CHARACTER.md              人物档案
+│   ├── WORLD.md                  世界观设定
+│   ├── PLOT_ARC.md               剧情弧线
+│   ├── VOLUME_SUMMARY_R01-R41.md 前41章完整档案
+│   └── VOLUME3_BIBLE.md          卷三方向和边界
+│
+├── 03_正文草稿/                ← 正文工作区
+├── 04_审稿体系/                ← 质量控制
+│   ├── DEVELOPMENT_EDITOR_CHARTER.md  开发编辑手册
+│   ├── MULTI_READER_PANEL.md          五位读者评估系统
+│   ├── Reader_Pass.md                 阅读体验检查
+│   └── BLACKLIST.md                   AI写作黑名单
+│
+├── 06_工作流体系/              ← 生产流程
+│   ├── CHAPTER_LENGTH_WORKFLOW.md     10步工程流程
+│   ├── style_advisor.py               四维风格扫描器
+│   ├── count_chars.py                 中文字数统计
+│   └── SCENE_ENGINE.md               场景引擎
+│
+├── 07_语言系统/                ← 模式库
+│   ├── Pattern_Library/               叙事模式
+│   ├── Scene_Library/                 场景模式
+│   ├── Emotion_Library/               情绪模式
+│   ├── Rhythm_Library/                节奏模式
+│   └── Dialogue_Library/              对白模式
+│
+├── 08_故事分析/                ← 故事健康度
+├── 09_项目数据库/              ← 跨卷数据库
+│   ├── trends/                        趋势追踪
+│   ├── identity/                      作品身份
+│   ├── review/                        评审记录
+│   └── watchlist/                     观察清单
+│
+├── 10_语言校准系统/            ← AI表达治理
+│   ├── ai_blacklist/                  AI高频表达黑名单
+│   ├── baseline/                      真实小说语言基线
+│   ├── scanner/                       语言健康度扫描
+│   └── knowledge_ref/                 知识库对接
+│
+├── Release/                     ← 已冻结正文（R01-R51）
+├── 归档/                       ← 历史版本归档
+└── prompts/                    ← 创作提示词</pre>
+</section>
+
+<!-- ==================== 9. 风险管理 ==================== -->
+<section>
+  <h2>9. 风险管理</h2>
+  <p>当前项目面临的长期风险，按严重程度排序：</p>
+
+  <div class="risk-item">
+    <div class="icon critical">!</div>
+    <div class="content">
+      <strong>系统复杂度增长</strong>
+      <p>文件越来越多、协议越来越多、维护越来越难。这是 Engine 最大的长期风险。→ <strong>应对：</strong>系统健康检查（每3卷执行）；四层加载控制上下文；归档机制清理过期文件；单一职责原则约束每个文件。</p>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="icon warn">!</div>
+    <div class="content">
+      <strong>文档膨胀</strong>
+      <p>工程文档持续增多，AI 上下文窗口有限。→ <strong>应对：</strong>4层加载架构，总上下文压缩至 ~2,300字；每三卷执行一次系统健康检查。</p>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="icon warn">!</div>
+    <div class="content">
+      <strong>世界观漂移</strong>
+      <p>长篇连载中设定容易自相矛盾。→ <strong>应对：</strong>CORE_CONSTITUTION 定义不可违反的 6 条 Identity；DATABASE_SUMMARY 追踪当前状态。</p>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="icon warn">!</div>
+    <div class="content">
+      <strong>人物漂移</strong>
+      <p>51 章后人物行为可能偏离初始设定。→ <strong>应对：</strong>CHARACTER_STATE 快照 + Character_Arc 弧线追踪；每次评审检查"白也还是白也吗"。</p>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="icon warn">!</div>
+    <div class="content">
+      <strong>AI 语言污染</strong>
+      <p>AI 生成文本带有固定句式和表达习惯。→ <strong>应对：</strong>10_语言校准系统（黑名单 + 基线 + 扫描器）；10 步工作流中 Step 4-7 专项清理。</p>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="icon warn">!</div>
+    <div class="content">
+      <strong>单点故障</strong>
+      <p>所有决策集中在一个宪法文件。→ <strong>应对：</strong>决策优先级明确（5 级）；冻结规则可独立执行；数据库层提供跨卷验证。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 10. 已完成里程碑 ==================== -->
+<section>
+  <h2>10. 已完成里程碑</h2>
+
+  <table>
+    <thead>
+      <tr><th>阶段</th><th>版本</th><th>产出</th><th>状态</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>第一卷 · 落星城/瓷片/雾城</td>
+        <td>R01-R20</td>
+        <td>20章 / ~40,000字 / 四条弧线</td>
+        <td><span class="badge badge-frozen">已冻结</span></td>
+      </tr>
+      <tr>
+        <td>第二卷 · 九次之卷</td>
+        <td>R31-R41</td>
+        <td>11章 / ~23,000字</td>
+        <td><span class="badge badge-frozen">已冻结</span></td>
+      </tr>
+      <tr>
+        <td>第三卷</td>
+        <td>R42-R51</td>
+        <td>10章 / ~21,000字</td>
+        <td><span class="badge badge-frozen">已冻结</span></td>
+      </tr>
+      <tr>
+        <td>Engine v2.3</td>
+        <td>2026-07-07</td>
+        <td>分层上下文系统 + 4个协议 + 数据库摘要</td>
+        <td><span class="badge badge-active">运行中</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== 11. 关键数据 ==================== -->
+<section>
+  <h2>11. 关键数据一览</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>总章数</h4>
+      <p>51 章已冻结<br>R01 → R51</p>
+    </div>
+    <div class="card">
+      <h4>总字数</h4>
+      <p>约 80,000 中文字<br>平均每章 ~2,100字</p>
+    </div>
+    <div class="card">
+      <h4>核心上下文</h4>
+      <p>约 2,300 字<br>4层分层加载</p>
+    </div>
+    <div class="card">
+      <h4>工程文件</h4>
+      <p>约 30 个核心文件<br>分布在 10 个目录</p>
+    </div>
+    <div class="card">
+      <h4>Engine 版本</h4>
+      <p>v2.3 稳定版<br>2026-07-07 发布</p>
+    </div>
+    <div class="card">
+      <h4>每章耗时</h4>
+      <p>约 3 小时<br>含创作+清理+评审</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 12. 给项目经理的问题 ==================== -->
+<section>
+  <div class="questions">
+    <h3>12. 想请教项目管理专业意见的问题</h3>
+    <p style="font-size:0.9em;color:var(--ink-light);margin-bottom:20px;">这些问题基于项目管理视角，而非文学创作视角：</p>
+    <ol>
+      <li><strong>维护成本趋势：</strong>这个系统运行半年后，维护成本会不会持续下降，而不是持续上升？</li>
+      <li><strong>文档职责重叠：</strong>有没有哪些文件的职责看起来重复了？（比如 REVIEW_PROTOCOL vs Reader_Pass vs MULTI_READER_PANEL）</li>
+      <li><strong>退出标准缺失：</strong>有没有哪些阶段缺少明确的 Exit Criteria（退出标准）？</li>
+      <li><strong>Source of Truth 冲突：</strong>如果两个文件的规则冲突了，以哪个为准？现在有没有明确的仲裁机制？</li>
+      <li><strong>同步成本：</strong>一个规则修改以后，需要同步几个地方？有没有 Single Source of Truth？</li>
+      <li><strong>版本管理：</strong>Engine 从 v1.0 到 v2.3 经历了多次重构，是否有版本号管理的遗漏？</li>
+      <li><strong>冻结决策权：</strong>"冻结"是谁决定的？是 AI 自动判断，还是需要作者确认？</li>
+      <li><strong>评审完成判定：</strong>怎么知道一个章节的 Review 真正完成了？有没有明确的 Done 定义？</li>
+      <li><strong>长期可扩展性：</strong>如果要写到 200 章、300 章，现在的架构能支撑吗？哪里会先撑不住？</li>
+      <li><strong>知识传承：</strong>如果换一个人（或换一个 AI）来接手这个项目，需要多长时间才能上手？</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  <p>项目评审材料 · 生成于 2026-07-08</p>
+  <p style="margin-top:4px;">仅供项目管理咨询使用，不包含正文内容</p>
+</div>
+
+</div>
+
+
+</body></html>

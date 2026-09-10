@@ -1,6 +1,7 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { THEME } from "../lib/theme";
+import { SPRINGS } from "../lib/springs";
 
 // TODO: Partikelfeld (Sternenstaub/Netzstaub) — sanftes Driften, dämpft „PPT-Gefühl“.
 // Vorgabe: seedbar (deterministisch aus frame ableiten, kein Math.random ohne Seed!).
@@ -34,12 +35,28 @@ export const ParticleField: React.FC<{ count?: number; color?: string }> = ({
   );
 };
 
-// TODO: NumberCounter — federt auf Zielwert (Hook-Zahlen, LDS-Werte).
-// Pattern: spring() als Treiber + interpolate() auf Zielwert mappen.
-export const NumberCounter: React.FC<{ value: number; decimals?: number }> = ({
-  value,
-  decimals = 2,
-}) => <span>{value.toFixed(decimals)}</span>;
+// NumberCounter — federt auf Zielwert (Hook-Zahlen, LDS-Werte).
+// Spring als Treiber, interpolate() mappt auf Anzeigewert. Overshoot clampen!
+export const NumberCounter: React.FC<{
+  value: number;
+  decimals?: number;
+  delay?: number;
+  size?: number;
+  color?: string;
+}> = ({ value, decimals = 2, delay = 0, size = 160, color = THEME.text }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const p = spring({ frame: frame - delay, fps, config: SPRINGS.snappy });
+  const shown = interpolate(p, [0, 1], [0, value], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  return (
+    <span style={{ fontSize: size, fontWeight: 800, color, fontVariantNumeric: "tabular-nums" }}>
+      {shown.toFixed(decimals)}
+    </span>
+  );
+};
 
 // TODO: Parallax — Ebenen mit speed-Faktoren gegeneinander verschieben (Kurzgesagt-Tiefe).
 // TODO: LDSChart — Balken LDS-C vs. Boden aus public/figures/*.png mit Push-In.

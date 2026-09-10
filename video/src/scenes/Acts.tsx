@@ -38,29 +38,9 @@ const Slate: React.FC<{
   </AbsoluteFill>
 );
 
-export const S01_Hook: React.FC = () => (
-  <Slate
-    act="S01 · HOOK + TEAM"
-    title="Dasselbe Wort. Drei Karten."
-    time="0:00–0:29"
-    audio="s01.mp3"
-    todos={[
-      "Blender s01_nebula.mp4 als Hintergrund (public/renders3d/)",
-      "Riesen-Typo + Dreifach-Split Freiheit/自由/freedom",
-      "Teamkarte 3 Sek: Name, Schule, BWKI 2026",
-    ]}
-  />
-);
+// S01/S02 leben in S01.tsx / S02.tsx (echte Szenen). Hier nur noch S03–S06.
 
-export const S02_Problem: React.FC = () => (
-  <Slate
-    act="S02 · PROBLEM"
-    title="Der blinde Fleck"
-    time="0:29–1:01"
-    audio="s02.mp3"
-    todos={["NumberCounter: Englisch-Anteil Trainingsdaten", "Weltkarte + EU-AI-Act-Zeile (MiniMax-Karte)"]}
-  />
-);
+// (gestrichen — S02_Problem lebt in S02.tsx)
 
 export const S03_Methode: React.FC = () => (
   <Slate

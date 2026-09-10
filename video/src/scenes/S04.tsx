@@ -1,114 +1,165 @@
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { THEME } from "../lib/theme";
+import { BLUEPRINT } from "../lib/theme";
 import { SPRINGS } from "../lib/springs";
-import { NumberCounter, ParticleField } from "../components/Effects";
+import { NumberCounter } from "../components/Effects";
 import { Vignette, VirtualCamera } from "../components/Camera";
+import { Grid, Rule, Ticks } from "../components/Blueprint";
 import { actFrames } from "../lib/timing";
+import { S04_CONTROL, S04_TOPICS, S04_TREIBER_DE, S04_TREIBER_ZH } from "../data/s04";
 
-// S04 · Befund — 39s (1170f). Zahlen nur aus narration_de/faktencheck (SSOT).
-// C1 (0–280):    51 Messungen / 47 Modelle
-// C2 (280–600):  LDS-C vs. Boden (Balken + Counter)
-// C3 (600–900):  Treiber DE vs. ZH
-// C4 (900–1170): Struktur, nicht nur Worte (+ Mathe indikativ)
+// S04 · Befund — 39s (1170f). Nativer Rebuild, Daten aus data/s04.ts.
+// B1 (0–360):    51/47-Mono-Counter · „überall signifikant"
+// B2 (360–760):  4 Themen-Säulen ZH-DE (grow+count), ZH-EN-Geister,
+//                Spotlight Freedom+Success + Treiber-Chips
+// B3 (760–1170): Kontrollbefund ZH-DE: Human/LLM/Social/Math · Math 0.52 cyan
 const DUR = actFrames(39);
+const MONO = BLUEPRINT.mono;
 
-const Card: React.FC<{
-  frame: number;
-  fps: number;
-  at: number;
-  outAt: number;
-  children: React.ReactNode;
-}> = ({ frame, fps, at, outAt, children }) => {
-  const p = spring({ frame: frame - at, fps, config: SPRINGS.smooth });
-  const out = interpolate(frame, [outAt, outAt + 25], [1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  return (
-    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", opacity: p * out }}>
-      <div style={{ transform: `translateY(${interpolate(p, [0, 1], [60, 0])}px)`, textAlign: "center" }}>
-        {children}
-      </div>
-    </AbsoluteFill>
-  );
-};
+const fade = (frame: number, at: number, len = 25) =>
+  interpolate(frame, [at, at + len], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+const fadeOut = (frame: number, at: number, len = 25) =>
+  interpolate(frame, [at, at + len], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
-const Bar: React.FC<{
+/** Vertikale Säule mit Counter über der Spitze. */
+const Column: React.FC<{
   label: string;
-  sub: string;
   value: number;
-  max: number;
+  maxH: number;
   color: string;
+  dim?: boolean;
   frame: number;
   fps: number;
   delay: number;
   decimals?: number;
-}> = ({ label, sub, value, max, color, frame, fps, delay, decimals = 2 }) => {
+  width?: number;
+}> = ({ label, value, maxH, color, dim, frame, fps, delay, decimals = 2, width = 120 }) => {
   const p = spring({ frame: frame - delay, fps, config: SPRINGS.smooth });
-  const w = interpolate(p, [0, 1], [0, (value / max) * 900]);
+  const h = interpolate(p, [0, 1], [0, value * maxH]);
   return (
-    <div style={{ margin: "18px 0", textAlign: "left", width: 1100 }}>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 24 }}>
-        <span style={{ fontSize: 40, fontWeight: 700, color: THEME.text, width: 420 }}>{label}</span>
-        <NumberCounter value={value} decimals={decimals} delay={delay} size={72} color={color} />
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", opacity: dim ? 0.3 : 1 }}>
+      <div style={{ height: 64, display: "flex", alignItems: "flex-end" }}>
+        <span style={{ fontFamily: MONO, fontSize: 44, color, fontVariantNumeric: "tabular-nums" }}>
+          {(interpolate(p, [0, 1], [0, value], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) as number).toFixed(decimals)}
+        </span>
       </div>
-      <div style={{ height: 26, background: "rgba(255,255,255,0.08)", borderRadius: 13, marginTop: 8 }}>
-        <div style={{ width: w, height: 26, background: color, borderRadius: 13 }} />
+      <div style={{ height: maxH + 8, display: "flex", alignItems: "flex-end", margin: "10px 0" }}>
+        <div style={{ width, height: Math.max(h, 2), background: color, opacity: 0.25 + 0.75 * p }} />
       </div>
-      <div style={{ fontSize: 26, color: THEME.muted, marginTop: 4 }}>{sub}</div>
+      <div style={{ fontFamily: MONO, fontSize: 30, color: BLUEPRINT.muted, letterSpacing: 2 }}>{label}</div>
     </div>
   );
 };
+
+const Chip: React.FC<{ children: React.ReactNode; color: string }> = ({ children, color }) => (
+  <span
+    style={{
+      fontFamily: MONO,
+      fontSize: 30,
+      letterSpacing: 2,
+      color,
+      border: `2px solid ${color}66`,
+      padding: "12px 26px",
+      margin: "0 10px",
+      background: BLUEPRINT.surface,
+    }}
+  >
+    {children}
+  </span>
+);
 
 export const S04_Befund: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  const b1 = fade(frame, 8) * fadeOut(frame, 330);
+  const b2 = fade(frame, 368) * fadeOut(frame, 730);
+  const b3 = fade(frame, 768);
+  // Spotlight ab f=700: nur Freedom (idx 0) + Success (idx 3) hell
+  const spot = interpolate(frame, [695, 725], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const chips = fade(frame, 700);
+
+  const zhde = S04_CONTROL.find((r) => r.pair === "ZH-DE")!;
+
   return (
-    <AbsoluteFill style={{ background: THEME.bg, fontFamily: THEME.font }}>
-      <VirtualCamera duration={DUR} fromScale={1} toScale={1.08}>
-        <ParticleField count={50} />
-        <Card frame={frame} fps={fps} at={10} outAt={250}>
-          <div style={{ display: "flex", gap: 120, justifyContent: "center" }}>
-            <div>
-              <NumberCounter value={51} decimals={0} size={170} color={THEME.gold} />
-              <div style={{ fontSize: 36, color: THEME.muted }}>Messungen</div>
+    <AbsoluteFill style={{ background: BLUEPRINT.shell, fontFamily: BLUEPRINT.sans }}>
+      <VirtualCamera duration={DUR} fromScale={1} toScale={1.06}>
+        <Grid />
+        <Ticks />
+        {/* ── B1: Zählung ── */}
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", opacity: b1 }}>
+          <div style={{ display: "flex", gap: 160 }}>
+            <div style={{ textAlign: "center" }}>
+              <NumberCounter value={51} decimals={0} delay={15} size={190} color={BLUEPRINT.gold} />
+              <div style={{ fontFamily: MONO, fontSize: 32, letterSpacing: 6, color: BLUEPRINT.muted }}>MESSUNGEN</div>
             </div>
-            <div>
-              <NumberCounter value={47} decimals={0} delay={15} size={170} color={THEME.cyan} />
-              <div style={{ fontSize: 36, color: THEME.muted }}>Modelle</div>
-            </div>
-          </div>
-          <div style={{ fontSize: 40, color: THEME.text, marginTop: 24 }}>
-            Ein Signal — <span style={{ color: THEME.gold }}>überall signifikant.</span>
-          </div>
-        </Card>
-        <Card frame={frame} fps={fps} at={310} outAt={570}>
-          <Bar label="LDS-C" sub="0,93–0,96 · Within-Subject" value={0.945} max={1} color={THEME.gold} frame={frame} fps={fps} delay={350} />
-          <Bar label="Boden" sub="0,85–0,87 · Split-Half-Rauschen" value={0.86} max={1} color={THEME.muted} frame={frame} fps={fps} delay={390} />
-        </Card>
-        <Card frame={frame} fps={fps} at={630} outAt={870}>
-          <div style={{ fontSize: 80, fontWeight: 800, color: THEME.text }}>
-            Kulturell <span style={{ color: THEME.gold }}>gemustert.</span>
-          </div>
-          <div style={{ display: "flex", gap: 40, justifyContent: "center", marginTop: 32 }}>
-            <div style={{ fontSize: 34, color: THEME.gold, border: "1px solid #f0c04055", borderRadius: 16, padding: "20px 36px" }}>
-              DE · Autonomie · Regeln
-            </div>
-            <div style={{ fontSize: 34, color: THEME.cyan, border: "1px solid #22d3ee55", borderRadius: 16, padding: "20px 36px" }}>
-              ZH · Raum · Anspruch
+            <div style={{ textAlign: "center" }}>
+              <NumberCounter value={47} decimals={0} delay={35} size={190} color={BLUEPRINT.accent} />
+              <div style={{ fontFamily: MONO, fontSize: 32, letterSpacing: 6, color: BLUEPRINT.muted }}>MODELLE</div>
             </div>
           </div>
-        </Card>
-        <Card frame={frame} fps={fps} at={930} outAt={1150}>
-          <div style={{ fontSize: 88, fontWeight: 800, color: THEME.text }}>
-            Struktur, <span style={{ color: THEME.cyan }}>nicht nur Worte.</span>
+          <Rule />
+          <div style={{ fontSize: 46, color: BLUEPRINT.text }}>
+            Ein Signal — <span style={{ color: BLUEPRINT.gold }}>überall signifikant.</span>
           </div>
-          <div style={{ fontSize: 34, color: THEME.muted, marginTop: 20 }}>
-            Auch Relationen divergieren · Mathematik konvergiert (indikativ)
+        </AbsoluteFill>
+
+        {/* ── B2: Themen-Säulen ── */}
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", opacity: b2 }}>
+          <div style={{ fontFamily: MONO, fontSize: 28, letterSpacing: 6, color: BLUEPRINT.muted, marginBottom: 8 }}>
+            LDS JE THEMA · <span style={{ color: BLUEPRINT.gold }}>■ ZH-DE</span>
+            <span style={{ color: BLUEPRINT.text2 }}> vs </span>
+            <span style={{ color: BLUEPRINT.faint }}>■ ZH-EN</span>
           </div>
-        </Card>
+          <div style={{ display: "flex", gap: 90, alignItems: "flex-end" }}>
+            {S04_TOPICS.map((t, i) => (
+              <div key={t.topic} style={{ position: "relative", display: "flex", gap: 14, alignItems: "flex-end" }}>
+                <Column
+                  label={t.topic.toUpperCase()}
+                  value={t.zhDe}
+                  maxH={380}
+                  color={BLUEPRINT.gold}
+                  dim={spot > 0.5 && i !== 0 && i !== 3}
+                  frame={frame}
+                  fps={fps}
+                  delay={390 + i * 70}
+                />
+                <Column
+                  label=""
+                  value={t.zhEn}
+                  maxH={380}
+                  color={BLUEPRINT.faint}
+                  dim={spot > 0.5 && i !== 0 && i !== 3}
+                  frame={frame}
+                  fps={fps}
+                  delay={415 + i * 70}
+                  width={44}
+                />
+              </div>
+            ))}
+          </div>
+          <div style={{ height: 96, marginTop: 18, opacity: chips }}>
+            <Chip color={BLUEPRINT.gold}>DE · {S04_TREIBER_DE.join(" · ")}</Chip>
+            <Chip color={BLUEPRINT.accent}>ZH · {S04_TREIBER_ZH.join(" · ")}</Chip>
+          </div>
+        </AbsoluteFill>
+
+        {/* ── B3: Kontrollbefund ── */}
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", opacity: b3 }}>
+          <div style={{ fontFamily: MONO, fontSize: 28, letterSpacing: 6, color: BLUEPRINT.muted, marginBottom: 8 }}>
+            KONTROLLBEFUND · ZH-DE
+          </div>
+          <div style={{ display: "flex", gap: 90, alignItems: "flex-end" }}>
+            <Column label="HUMAN" value={zhde.human} maxH={360} color={BLUEPRINT.text2} frame={frame} fps={fps} delay={790} />
+            <Column label="LLM" value={zhde.llm} maxH={360} color={BLUEPRINT.text2} frame={frame} fps={fps} delay={830} />
+            <Column label="SOCIAL" value={zhde.social} maxH={360} color={BLUEPRINT.muted} frame={frame} fps={fps} delay={870} />
+            <Column label="MATH" value={zhde.math} maxH={360} color={BLUEPRINT.accent} frame={frame} fps={fps} delay={910} />
+          </div>
+          <div style={{ marginTop: 30, fontSize: 42, color: BLUEPRINT.text, opacity: fade(frame, 990) }}>
+            Institutionelles Wissen <span style={{ color: BLUEPRINT.accent }}>konvergiert.</span>
+            <span style={{ color: BLUEPRINT.muted }}> Kultur divergiert.</span>
+          </div>
+        </AbsoluteFill>
       </VirtualCamera>
       <Vignette />
     </AbsoluteFill>

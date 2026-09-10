@@ -38,7 +38,7 @@ const Slate: React.FC<{
   </AbsoluteFill>
 );
 
-// S01–S03 leben in S01/S02/S03.tsx (echte Szenen). Hier nur noch S04–S06.
+// Alle 6 Akte leben in S01–S06.tsx. Diese Datei nur noch als Referenz für alte Schiefer.
 
 // (gestrichen — S02_Problem lebt in S02.tsx)
 

@@ -38,11 +38,11 @@ const Slate: React.FC<{
   </AbsoluteFill>
 );
 
-// S01/S02 leben in S01.tsx / S02.tsx (echte Szenen). Hier nur noch S03–S06.
+// S01–S03 leben in S01/S02/S03.tsx (echte Szenen). Hier nur noch S04–S06.
 
 // (gestrichen — S02_Problem lebt in S02.tsx)
 
-export const S03_Methode: React.FC = () => (
+export const S03_Methode_PLACEHOLDER: React.FC = () => (
   <Slate
     act="S03 · METHODE"
     title="Das Modell als Proband"

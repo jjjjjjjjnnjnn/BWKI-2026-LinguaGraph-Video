@@ -1,0 +1,8 @@
+condition,type,ZH-EN,DE-EN,ZH-DE,notes
+Full (baseline),standard,0.9336,0.9382,0.5188,
+Structure Null (deg.-preserving),standard,0.9571,0.9546,0.7142,
+Node-Permuted Null,standard,0.9336,0.9382,0.5188,
+Complete Random,standard,1.0,1.0,1.0,
+Within-Lang (same split),adversarial,0.9695,0.9744,0.9615,adversarial null — tests threaten language claim
+Label Permute (group-level),adversarial,0.8407,0.8701,0.6704,adversarial null — tests threaten language claim
+Mono Control (same lang),adversarial,,,,adversarial null — tests threaten language claim

@@ -1,0 +1,4 @@
+pair,Human N=15 (between),LLM within-subject,Social Wikipedia,Math textbook (LDS-K)
+ZH-EN,0.9634,0.9552,0.6976,0.9336
+DE-EN,0.9324,0.93,0.7234,0.9382
+ZH-DE,0.9364,0.9446,0.8191,0.5188

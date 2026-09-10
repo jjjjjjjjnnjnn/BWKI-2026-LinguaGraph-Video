@@ -1,0 +1,7 @@
+domain,ZH-EN,ged_zh_en,jaccard_node_zh_en,jaccard_edge_zh_en,DE-EN,ged_de_en,jaccard_node_de_en,jaccard_edge_de_en,ZH-DE,ged_zh_de,jaccard_node_zh_de,jaccard_edge_zh_de
+Calculus,0.8662,0,0.1316,0.136,0.9061,0,0.1121,0.0758,0.5748,0,0.5476,0.3028
+Linear Algebra,0.9556,0,0.0707,0.0182,0.9501,0,0.0816,0.0182,0.6127,0,0.4722,0.3023
+Statistics,0.95,0,0.1,0.0,0.95,0,0.1,0.0,0.1624,0,0.8857,0.7895
+Elementary,0.9681,0,0.0638,0.0,0.9681,0,0.0638,0.0,0.2946,0,0.7857,0.625
+Middle School,1.0,0,0.0,0.0,1.0,0,0.0,0.0,0.8417,0,0.25,0.0667
+Geometry,1.0,0,0.0,0.0,1.0,0,0.0,0.0,0.1429,0,0.7143,1.0

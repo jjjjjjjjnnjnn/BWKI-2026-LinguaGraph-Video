@@ -42,7 +42,7 @@ export const S01_Hook: React.FC = () => (
   <Slate
     act="S01 · HOOK + TEAM"
     title="Dasselbe Wort. Drei Karten."
-    time="0:00–0:30"
+    time="0:00–0:29"
     audio="s01.mp3"
     todos={[
       "Blender s01_nebula.mp4 als Hintergrund (public/renders3d/)",
@@ -56,7 +56,7 @@ export const S02_Problem: React.FC = () => (
   <Slate
     act="S02 · PROBLEM"
     title="Der blinde Fleck"
-    time="0:30–0:55"
+    time="0:29–1:01"
     audio="s02.mp3"
     todos={["NumberCounter: Englisch-Anteil Trainingsdaten", "Weltkarte + EU-AI-Act-Zeile (MiniMax-Karte)"]}
   />
@@ -66,7 +66,7 @@ export const S03_Methode: React.FC = () => (
   <Slate
     act="S03 · METHODE"
     title="Das Modell als Proband"
-    time="0:55–1:40"
+    time="1:01–1:47"
     audio="s03.mp3"
     todos={["Drei Panels (DE/ZH/EN) → Graph-Extraktion → LDS-Formel", "Portal-Screenshot + Pipeline-SVG"]}
   />
@@ -76,7 +76,7 @@ export const S04_Befund: React.FC = () => (
   <Slate
     act="S04 · BEFUND"
     title="Das Signal ist real"
-    time="1:40–2:25"
+    time="1:47–2:26"
     audio="s04.mp3"
     todos={[
       "Balken LDS-C vs. Boden (figures-Snapshot)",
@@ -91,7 +91,7 @@ export const S05_Reflexion: React.FC = () => (
   <Slate
     act="S05 · REFLEXION"
     title="Ehrlich dazu"
-    time="2:25–2:45"
+    time="2:26–2:51"
     audio="s05.mp3"
     todos={["Ruhige Statikkarte, 3 Punkte, kein Bounce, kein Gold"]}
   />
@@ -101,7 +101,7 @@ export const S06_Schluss: React.FC = () => (
   <Slate
     act="S06 · ANWENDUNG + SCHLUSS"
     title="LinguaGraph. Sichtbar."
-    time="2:45–3:10"
+    time="2:51–3:23"
     audio="s06.mp3"
     todos={["Divergenzbericht-Mockup", "Endkarte: Danke + GitHub/Demo-Links"]}
   />

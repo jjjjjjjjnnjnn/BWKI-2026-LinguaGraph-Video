@@ -1,9 +1,7 @@
 import React from "react";
-import { AbsoluteFill, Composition, Folder, Sequence, Still } from "remotion";
+import { AbsoluteFill, Audio, Composition, Folder, Sequence, Still, staticFile } from "remotion";
 import { ACTS, FPS, TOTAL_FRAMES, actFrames } from "./lib/timing";
 import { S01_Hook, S02_Problem, S03_Methode, S04_Befund, S05_Reflexion, S06_Schluss } from "./scenes/Acts";
-import { Audio } from "@remotion/media";
-import { staticFile } from "remotion";
 
 const SCENES = [S01_Hook, S02_Problem, S03_Methode, S04_Befund, S05_Reflexion, S06_Schluss];
 

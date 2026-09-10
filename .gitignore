@@ -1,0 +1,37 @@
+# .gitignore — Video-Pitch-Repo
+# Prinzip: Code + Docs + Skripte ins Git; große Binaries raus (GitHub-Limit 100 MB/Datei).
+
+# --- Render-Outputs (lokal behalten, per Release/Drive teilen) ---
+renders/v1/
+renders/v2/
+renders/final/*.mp4
+video/public/footage/*.mp4
+video/public/ai-clips/*.mp4
+video/public/renders3d/*.mp4
+blender/renders/final/
+*.mp4
+!video/src/**/*.mp4
+
+# --- Blender/ComfyUI Schwergewichte ---
+*.blend1
+blender/renders/previz/
+comfy/output/
+ComfyUI/output/
+
+# --- Audio-Zwischenprodukte (reproduzierbar via tooling/tts_edge.py) ---
+video/public/audio/*.mp3
+
+# --- OS / Editor ---
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log
+!renders/render.log
+node_modules/
+.venv/
+__pycache__/
+
+# --- Secrets (dürfen hier nie landen) ---
+.env
+*.key
+*api*key*

@@ -1,32 +1,33 @@
-# LinguaGraph — BWKI 2026 Video-Pitch (nach)
+# LinguaGraph — BWKI 2026 Video-Pitch
 
-> **Status**: Gerüst / Scaffold (2026-09-10) — noch kein Bild gerendert, kein Ton aufgenommen.
-> **Ziel**: 2–4 Min, 1080p, H.264 · DE-Narration + EN-Untertitel · Frist 20.09.2026
-> **Narrativ**: v2 AI-Audit-Framing (LLM-as-Subject) + Team/Motivation-Hook + kritische Reflexion
-> **Stil**: Apple-Keynote — dunkle Bühne, eine Idee pro Karte, riesige Zahlen, Live-Demo-Moment
+> **Status**: v4 · fertig (2026-09-11) · **5.09 MB** · **201.5s** · H.264+AAC · **ohne Untertitel** (per User-Feedback)
+> **Architektur**: `/web-video-presentation` — Vite + React + TS · 1 Chapter × 32 Step · indigo-porcelain Theme · per-step 自绘 CSS/SVG
+> **Deadline**: 2026-09-20
 
-## In 30 Sekunden verstehen
+## 4 Befehle
 
-1. `docs/storyboard.md` — was der Film zeigt (6 Akte, Bild + Ton + Sekunde)
-2. `docs/narration_de.md` — der gesprochene deutsche Text (SSOT für TTS)
-3. `video/src/lib/timing.ts` — einzige Stelle, an der Dauern geändert werden
-4. `docs/faktencheck.md` — Pflicht-Checkliste vor jedem Upload
+```bash
+cd "C:/Users/rongj/Desktop/学校/BWKI 介绍/nach/presentation"
 
-## 3 Befehle (nach Setup, siehe `docs/handoff.md`)
+# 1. Audio synthetisieren (32 mp3 via edge-tts de-DE-ConradNeural)
+PRESENTATION_TTS=edge-tts PRESENTATION_TTS_VOICE=de-DE-ConradNeural \
+  bash scripts/synthesize-audio.sh
 
-```powershell
-# 1. Ton erzeugen (liest docs/narration_de.md)
-python tooling/tts_edge.py
+# 2. Audio zu einem Track zusammenhängen
+node scripts/concat-audio.mjs
 
-# 2. Vorschau / Rendern
-cd video; npx remotion studio          # Vorschau im Browser
-npx remotion render BWKIFinal ../renders/v2/bwki-final-v2.mp4
+# 3. 32 Frames mit Playwright headless aufnehmen
+node scripts/record.mjs
 
-# 3. Endmontage (Concat + Untertitel + Loudnorm)
-.\tooling\assemble.ps1
+# 4. Frames + Audio zu finalem MP4 zusammenbauen (loudnorm + 1344×768@24fps)
+node scripts/post-frames.mjs
+# → renders/final/LinguaGraph_BWKI2026_Pitch.mp4
 ```
 
-## Repo-Karte → [`INDEX.md`](INDEX.md)
+> Erforderlich für Schritt 3: `npx playwright install chromium` (einmalig).
+> Schritt 1-4 sind nur nach Narrations-Änderungen nötig; in der Regel reicht 3+4.
+
+## Repo-Karte → [`INDEX.md`](INDEX.md) · Pipeline-Doku → [`docs/PIPELINE-v4.md`](docs/PIPELINE-v4.md)
 
 ## Fakten-SSOT (nicht hier ändern — Quelle ist das Forschungsrepo)
 
@@ -34,12 +35,15 @@ npx remotion render BWKIFinal ../renders/v2/bwki-final-v2.mp4
 |---|---|---|
 | Konzepte / Relationen / Gruppen | 556 / 525 / 219 | `BWKI-2026-备战/manifest.json` |
 | F1 sozial / gewichtet | 0,939 / 0,881 | Gold-Annotationen (72+20) |
-| LLM-Replikation | 51 Messungen / 47 Modelle | `data/lds_c/llm_subject/` |
+| LLM-Replikation | 55 Messungen / 50 Modelle | `data/lds_c/llm_subject/` |
 | Human N=15 | ΔLDS ≈ 0 (Between-Subject, Design-Artefakt) | `docs/paper/` |
+| LDS-C vs. Boden | 0,93–0,96 vs. 0,85–0,87 | Within-Subject Basismodell |
 | Schwelle ≥ 0,10 | heuristisch, keine validierte Grenze | Paper §8.15 |
 
 ## Rote Linien (Details: `docs/faktencheck.md`)
 
-- Kein N=8 (0,70–0,75), kein Sim-Vergleich p=0,05, kein „fertiges Audit-Instrument“.
-- Mathe-Konvergenz nur als *indikativ* (P2-Recheck: Alignment-Artefakte).
-- Unterstützung (Claude Code, 43+8 Modelle via API, N=15 Eigen-Erhebung) wird im Film offengelegt.
+- Kein N=8 (0,70–0,75), kein Sim-Vergleich p=0,05, kein „fertiges Audit-Anstrument"
+- Mathe-Konvergenz nur als *indikativ* (P2-Recheck: Alignment-Artefakte)
+- Offenlegung im Film/Beschreibung: Claude Code, 42 DashScope- + 7 zen/OpenRouter-Modelle + D1 + Kilo/Cohere/NIM/opencode (55 Messungen / 50 Modelle), N=15 Eigen-Erhebung
+- Wikipedia CC-BY-SA: Quellenartangte in Videobeschreibung verlinken (TODO vor Upload)
+- **v4-Entscheidung**: KEINE eingebrannten Untertitel (User-Feedback 2026-09-11) — DA-Video, deutscher Originalton, internationale Jury erwartet entweder DE-Audio oder keine Subs; DA-Narration spricht für sich

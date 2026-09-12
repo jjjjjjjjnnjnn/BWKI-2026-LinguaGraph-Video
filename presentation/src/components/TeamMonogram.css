@@ -1,0 +1,92 @@
+/* ─── TeamMonogram — v6 — two author monograms ─────────────────────
+ * Hardened for Playwright recordVideo: literal rgb() values, no keyframe
+ * animations, no backdrop-filter. CSS-injected chrome in record-video.mjs
+ * does NOT hide this — the user wants the team visible during recording.
+ * ─────────────────────────────────────────────────────────────────── */
+.tm {
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.tm-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tm-circle {
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 500;
+  color: rgb(255, 255, 255);
+  letter-spacing: -0.02em;
+  border: 1.5px solid rgb(30, 58, 138);
+}
+
+.tm-circle-accent {
+  background: rgb(30, 58, 138);
+  color: rgb(255, 255, 255);
+}
+
+.tm-circle-soft {
+  background: rgb(241, 243, 245);
+  color: rgb(10, 31, 61);
+  border-color: rgb(198, 205, 214);
+}
+
+.tm-initials {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+}
+
+.tm-initials-dark {
+  color: rgb(10, 31, 61);
+}
+
+.tm-dot {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: rgb(133, 149, 173);
+  letter-spacing: 0.1em;
+}
+
+/* ─── size variants ──────────────────────────────────────────────── */
+.tm-lg .tm-circle {
+  width: 80px;
+  height: 80px;
+  font-size: 30px;
+}
+.tm-lg .tm-dot {
+  font-size: 14px;
+}
+.tm-lg .tm-caption {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+
+.tm-md .tm-circle {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+.tm-md .tm-dot {
+  font-size: 12px;
+}
+.tm-md .tm-caption {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+.tm-caption {
+  font-family: "IBM Plex Mono", monospace;
+  color: rgb(133, 149, 173);
+  text-transform: uppercase;
+  white-space: nowrap;
+}

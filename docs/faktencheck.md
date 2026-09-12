@@ -2,6 +2,11 @@
 
 > **Regel**: Kein Upload (Plattform wie YouTube/Vimeo/BWKI-Portal), bevor ALLES angehakt ist.
 > Nach jedem Zahlen-Update erneut prüfen. Referenz: Forschungsrepo `BWKI-2026-备战` (commit `3dd70bd`, v0.14.1).
+>
+> 🌐 **[English README](../../README.md)** · **[Deutsch README](../../README.de.md)** · **[中文 README](../../README.zh.md)**
+>
+> **Compliance** (v11): Siehe [`../../ETHICS.md`](../../ETHICS.md) für KI-Offenlegung und
+> [`../../docs/PRIVACY.md`](../../docs/PRIVACY.md) für DSGVO-Konformität (N=15).
 
 ## Zahlen (gegen `manifest.json` / `data/lds_c/` prüfen)
 

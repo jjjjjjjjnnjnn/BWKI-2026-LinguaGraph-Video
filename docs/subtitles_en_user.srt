@@ -1,0 +1,152 @@
+1
+00:00:00,000 --> 00:00:05,640
+I am Jiajun Rong from Privatschule Schloss Heessen.
+LinguaGraph makes exactly these differences measurable.
+
+2
+00:00:05,640 --> 00:00:13,930
+Let's ask a German AI model: what belongs to freedom?
+It answers: autonomy, rules, one's own goals.
+
+3
+00:00:13,930 --> 00:00:19,970
+Let's ask the same model in Chinese about Zi You.
+It says: room, boundaries, what one is entitled to.
+
+4
+00:00:19,970 --> 00:00:23,370
+Same word — but a different cognitive map.
+
+5
+00:00:23,370 --> 00:00:26,410
+LinguaGraph makes exactly these differences measurable.
+
+6
+00:00:26,410 --> 00:00:31,090
+AI systems today serve billions of people,
+in dozens of languages.
+
+7
+00:00:31,090 --> 00:00:35,340
+But they're trained predominantly on English data.
+
+8
+00:00:35,340 --> 00:00:40,980
+Does a model mean the same thing by 'justice'
+in a German and a Chinese loan decision?
+
+9
+00:00:40,980 --> 00:00:44,220
+If not, users get different treatment
+depending on the language they speak.
+
+10
+00:00:44,220 --> 00:00:52,390
+Standard AI evaluation only measures task completion —
+not whether value concepts stay consistent across languages.
+
+11
+00:00:52,390 --> 00:00:54,910
+This is a blind spot.
+
+12
+00:00:54,910 --> 00:00:58,710
+How do you measure something invisible —
+like a model's concept structure?
+
+13
+00:00:58,710 --> 00:01:01,070
+The core idea: ask the AI itself.
+
+14
+00:01:01,070 --> 00:01:13,030
+We turn the LLM into a controlled subject:
+Same model, same five topics — justice, freedom, responsibility, home, success — only the language changes.
+
+15
+00:01:13,030 --> 00:01:16,270
+Because it's the same model, language is the only variable.
+
+16
+00:01:16,270 --> 00:01:20,350
+From each response we extract a concept graph, per language.
+
+17
+00:01:20,350 --> 00:01:27,550
+Our new metric, the Linguistic Divergence Score,
+measures structural divergence — across shared concepts and relations.
+
+18
+00:01:27,550 --> 00:01:32,350
+And we don't just output a number —
+we name exactly which concept components diverge.
+
+19
+00:01:32,350 --> 00:01:38,550
+We extended the experiment to over fifty models
+from various providers — including a US-American model.
+
+20
+00:01:38,550 --> 00:01:45,590
+In fifty-five measurements, the Chinese–German signal
+is statistically significant.
+
+21
+00:01:45,590 --> 00:01:54,030
+And it's not random — it's culturally patterned.
+German concepts stress autonomy and rules;
+Chinese ones, space and aspiration.
+
+22
+00:01:54,030 --> 00:02:02,990
+The decisive control finding: institutional knowledge —
+like mathematics — converges across languages.
+Cultural concepts clearly diverge.
+
+23
+00:02:02,990 --> 00:02:06,710
+Even the relations between concepts
+organize themselves in language-specific ways.
+
+24
+00:02:06,710 --> 00:02:07,710
+Honestly:
+
+25
+00:02:07,710 --> 00:02:15,910
+Our human experiment with fifteen people
+shows no language signal under between-subject conditions —
+a design artifact, not counter-evidence.
+
+26
+00:02:15,910 --> 00:02:21,950
+Eight English-containing pairs are not significant —
+consistent with the English-centrism of today's models.
+
+27
+00:02:21,950 --> 00:02:27,870
+And our operational threshold of zero point one zero
+is a heuristic rule of thumb — not a validated boundary.
+
+28
+00:02:27,870 --> 00:02:30,550
+LinguaGraph is a new kind of AI audit.
+
+29
+00:02:30,550 --> 00:02:37,750
+A developer can check before deploying a multilingual model:
+does mine drift on value-laden terms across languages — and where exactly?
+
+30
+00:02:37,750 --> 00:02:42,430
+For regulators, it delivers the transparency
+the EU AI Act requires.
+
+31
+00:02:42,430 --> 00:02:48,870
+The output is interpretable — no black-box score,
+but a list of the concrete concept components that diverge.
+
+32
+00:02:48,870 --> 00:02:51,870
+LinguaGraph. Visible. Thank you.

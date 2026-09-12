@@ -20,7 +20,7 @@ Wie misst man etwas Unsichtbares wie die Konzeptstruktur eines Modells? Kernidee
 
 ## S04 — Befund (1:47–2:26)
 
-Wir haben das Experiment auf mehr als 50 Modelle verschiedener Anbieter ausgeweitet — auch auf ein US-amerikanisches Modell. In allen 51 Messungen ist das chinesisch-deutsche Signal statistisch signifikant. Und es ist nicht zufällig, sondern kulturell gemustert: Deutsche Konzepte betonen Autonomie und Regeln, chinesische Raum und Anspruch. Der entscheidende Kontrollbefund: Institutionelles Wissen — etwa Mathematik — konvergiert sprachübergreifend. Kulturelle Konzepte divergieren dagegen deutlich. Selbst die Beziehungen zwischen Konzepten organisieren sich sprachspezifisch.
+Wir haben das Experiment auf über 50 Modelle verschiedener Anbieter ausgeweitet — auch auf ein US-amerikanisches Modell. In allen 55 Messungen ist das chinesisch-deutsche Signal statistisch signifikant. Und es ist nicht zufällig, sondern kulturell gemustert: Deutsche Konzepte betonen Autonomie und Regeln, chinesische Raum und Anspruch. Der entscheidende Kontrollbefund: Institutionelles Wissen — etwa Mathematik — konvergiert sprachübergreifend. Kulturelle Konzepte divergieren dagegen deutlich. Selbst die Beziehungen zwischen Konzepten organisieren sich sprachspezifisch.
 
 ## S05 — Kritische Reflexion (2:26–2:51) [ROHFASSUNG, muss gekürzt werden]
 
